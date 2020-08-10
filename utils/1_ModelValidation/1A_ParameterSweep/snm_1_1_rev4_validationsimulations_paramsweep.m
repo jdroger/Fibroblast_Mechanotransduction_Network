@@ -4,7 +4,7 @@ function snm_1_1_rev4_validationsimulations_paramsweep(tension,dose)
 % 
 % Suggested inputs: tension=0.3, dose=0.6
 
-savedir =  'D:\Research\Aim2\ModelExpansion\1_1\rev4\Validation_Zeigler\';
+savedir =  'data\1_ModelValidation\';
 
 % species parameters (constant)
 speciesNames = {'AngII','AT1R','AGT','ACE','NOX','ROS','ET1','ETAR','DAG','PKC','TRPC','NE','BAR','AC','cAMP','PKA','CREB','CBP','TGFB','TGFB1R','smad3','smad7','latentTGFB','BAMBI','PDGF','PDGFR','NP','NPRA','cGMP','PKG','tension','B1int','Rho','ROCK','Ca','calcineurin','NFAT','IL6','gp130','STAT','IL1','IL1RI','TNFa','TNFaR','NFKB','PI3K','Akt','p38','TRAF','ASK1','MKK3','PP1','JNK','abl','Rac1','MEKK1','MKK4','ERK','Ras','Raf','MEK1','FAK','epac','Factin','FA','cmyc','CTGF','proliferation','SRF','EDAFN','aSMA','AP1','TIMP1','TIMP2','PAI1','proMMP14','proMMP1','proMMP2','proMMP9','fibronectin','periostin','proCI','proCIII','B3int','Src','Grb2','p130Cas','YAP','MRTF','Gactin','TNC','mTORC1','mTORC2','p70S6K','EBP1','syndecan4','proMMP3','proMMP8','proMMP12','thrombospondin4','osteopontin','contractility','RhoGEF','RhoGDI','talin','vinculin','paxillin','MLC','AT2R',}; 
