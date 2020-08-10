@@ -17,5 +17,8 @@ This repository provides analyses for a Netflux-generated ODE network of fibrobl
 
 ---
 
-- **1_ModelValidation**: Qualitative validation of input-output and input-intermediate predictions with independent literature set. Consists of functions for model simulations (validationsimulations.m) and comparison with literature (validationanalysis.m). Generates Figure 2
-  - *1A_ParameterSweep*: Sweep of EC50/n parameters for optimizing prediction accuracy. Generates Supplemental Figure S2
+- **1_ModelValidation**: Qualitative validation of input-output and input-intermediate predictions with independent literature set.
+  - *ValidationSimulations.m*: Runs model simulations of network activation in response to single input stimuli, and categorizes changes in node activity compared to baseline conditions based on a 5% threshold
+  - *ValidationAnalysis.m*: Compares model-predicted changes to independent literature set and visualizes as a qualitative heatmap (Figure 2)
+  - *1A_ParameterSweep*: Performs parameter sweep of EC50/n reaction parameters, predicting qualitative changes in node activity for each parameter set and comparing predictions to independent literature set to optimize parameters (Figure S2)
+  
