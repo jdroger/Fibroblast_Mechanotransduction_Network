@@ -1,8 +1,8 @@
 % Model validation: SNM 1.1rev4
 % Created 14 Apr 2020 JR
 
-homedir = "D:\Research\Aim2\ModelExpansion\1_1\rev4\";
-valdir = "Validation_Zeigler\";
+homedir = "data\";
+valdir = "1_ModelValidation\";
 addpath(homedir)
 addpath(strcat(homedir,valdir));
 % Import simulation data
@@ -120,7 +120,7 @@ for n_i = 1:size(predictions,3)
 end
 
 %% Visualize predictions:
-% 1. Heatmap: parameter sweep results
+%%%%%%% Fig. S2: parameter sweep results %%%%%%%
 correct_sweep = array2table(correct_sweep,'VariableNames',["n" "EC50" "in-out" "in-med"]);
 fig_sweep = figure('position',[100 200 750 250]);
 subplot(1,2,1);
@@ -130,7 +130,7 @@ subplot(1,2,2);
 fig = heatmap(correct_sweep,"n","EC50","ColorVariable","in-med");
 title("Input-Intermediate Accuracy");
 
-% 2. Qualitative heatmap: in-out relationships
+%%%%%%% Fig. 2A: Qualitative heatmap, in-out relationships %%%%%%%
 joined = sortrows(joined_keep,{'Input','Output'});   %arrange rows for uniformity
 joined_inputs = unique(joined_keep.Input);
 joined_med = sortrows(joined_keep_med,{'Input','Output'});
@@ -173,7 +173,7 @@ for input = 1:length(joined_inputs)
     end
 end
 
-% 3. Qualitative heatmap: in-med relationships
+%%%%%%% Fig. 2B: Qualitative heatmap, in-med relationships %%%%%%%
 overall_med = figure('position',[200 40 400 750]);
 for input = 1:length(joined_inputs_med)
     subset_input = joined_inputs_med{input};

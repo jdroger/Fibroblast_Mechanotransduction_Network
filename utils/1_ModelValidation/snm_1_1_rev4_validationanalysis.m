@@ -2,17 +2,17 @@
 % Created 14 Apr 2020 JR
 
 %% Import simulation predictions (pred)
-homedir = "D:\Research\Aim2\ModelExpansion\1_1\rev4\";
-valdir = "Validation_Zeigler\";
+homedir = "data\";
+valdir = "1_ModelValidation\";
 addpath(homedir)
 addpath(strcat(homedir,valdir));
 fprintf("Loading Data...\n")
 filedir = "snm_1_1_rev4_validation_inputs.mat";
-load(strcat(homedir,valdir,filedir))
+load(filedir)
 filedir = "snm_1_1_rev4_validation_predictions.mat";
-load(strcat(homedir,valdir,filedir))
+load(filedir)
 filedir = "snm_1_1_rev4_validation_speciesNames.mat";
-load(strcat(homedir,valdir,filedir))
+load(filedir)
 
 modelpath = 'snm_1_1_rev4.xlsx';
 sheetname = "reactions";
@@ -158,6 +158,7 @@ xdata = ["Experiment","Model 1.0 1pct","Simulation"];
 pos2 = 0:9;
 pos2 = 0.082 + 0.096*pos2;
 
+%%%%%%% Fig. 2A: Qualitative heatmap, in-out relationships %%%%%%%
 overall = figure('position',[100 40 1000 350]);
 joined_inputs = unique(joined.Input);
 for input = 1:length(joined_inputs)
@@ -185,6 +186,7 @@ for input = 1:length(joined_inputs)
     end
 end
 
+%%%%%%% Fig. 2B: Qualitative heatmap, in-med relationships %%%%%%%
 overall_med = figure('position',[100 400 1000 350]);
 joined_inputs_med = unique(joined_med.Input);
 for input = 1:length(joined_inputs_med)
