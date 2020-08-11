@@ -15,24 +15,25 @@ speciesNames = {'AngII','AT1R','AGT','ACE','NOX','ROS','ET1','ETAR','DAG','PKC',
 % rev = zeros(length(speciesNames),imax);       %reversal values for heatmap 2 
 
 %opening datasets for each input
-datadir = 'D:\Research\Aim2\ModelExpansion\1_1\rev4\SensitivityAnalysis_PrelimData\simulation_data\';
-cmapdir = "D:/Research/Aim2/BrewerMap-master/";
+datadir = 'data\2_MCInteractionAnalysis\';
+plotdir = 'plots\';
+cmapdir = 'utils\BrewerMap-master\';
 addpath(cmapdir);
 map = brewermap(21,'PRGn');
 map_rev = [1 0.47 0.24];
 
 for k = 1:imax
     choice = inputNames{k};
-    filename_AA = strcat(datadir,'dAA_',choice,'_final.mat');
-    filename_rev = strcat(datadir,'rev_AA_',choice,'_final.mat');
-    load(filename_AA)
+    filename_dAUC = strcat(datadir,'dAUC_',choice,'.mat');
+    filename_rev = strcat(datadir,'rev',choice,'.mat');
+    load(filename_dAUC)
     load(filename_rev)
-    % dAAlo(:,k) = dAA(:,:,1).';
-    dAAplot(:,k,:) = permute(dAA,[2 1 3]);
-    for i = 1:size(dAAplot,3)
+    % dAUClo(:,k) = dAUC(:,:,1).';
+    dAUCplot(:,k,:) = permute(dAUC,[2 1 3]);
+    for i = 1:size(dAUCplot,3)
         for j = 1:length(speciesNames)
-            if revAA(:,j,i) == -1 || revAA(:,j,i) == 1
-                dAAplot(j,k,i) = NaN;                   % reassign reversed values
+            if rev(:,j,i) == -1 || rev(:,j,i) == 1
+                dAUCplot(j,k,i) = NaN;                   % reassign reversed values
             end
         end
     end
@@ -43,22 +44,22 @@ end
 
 %setting colorbar limits (based on max/min values of each dataset)
 % lolimit = max(dAAplot,[],'all');
-limit = min(dAAplot,[],'all');
+limit = min(dAUCplot,[],'all');
 reverselabel = "Reverse";
 tensionlabel = 0.1:0.1:0.9;
 
-% Heatmap 1 = Sensitivity in (all) stretch cases
-for i = 1:size(dAAplot,3)
-% for i = 1:size(dAAplot,2)
+%%%%%% Figure 3A-B: dAUC heatmaps at tension levels 0.5/0.9 %%%%%%
+for i = [5 9]
+% for i = 1:size(dAUCplot,2)
     pos = 250;
-    if any(isnan(dAAplot(:,:,i)),'all')
-    % if any(isnan(dAAplot(:,i,:)),'all')
+    if any(isnan(dAUCplot(:,:,i)),'all')
+    % if any(isnan(dAUCplot(:,i,:)),'all')
         pos = pos+23.08;                   % adjust width for reverse-containing cases
     end
     fig = figure("position",[100+50*i 100 pos 400]);
     % subplot(1,2,1);
-    fig1 = heatmap(fig,inputNames,speciesNames,dAAplot(:,:,i));
-    % fig1 = heatmap(fig,tensionlabel,speciesNames,permute(dAAplot(:,i,:),[1 3 2]));
+    fig1 = heatmap(fig,inputNames,speciesNames,dAUCplot(:,:,i));
+    % fig1 = heatmap(fig,tensionlabel,speciesNames,permute(dAUCplot(:,i,:),[1 3 2]));
     grid off
     fig1.Title = strcat("Tension = ",string(0.1+0.1*(i-1)));
     % fig1.Title = inputs{i};
@@ -69,60 +70,60 @@ for i = 1:size(dAAplot,3)
     % fig1.InnerPosition = [0.1 0.1 0.56 0.8];                  % for subplot
     fig1.MissingDataLabel = reverselabel;
     fig1.MissingDataColor = map_rev;
-    if i == size(dAAplot,3)
-    % if any(isnan(dAAplot(:,i,:)),'all')
+    if i == size(dAUCplot,3)
+    % if any(isnan(dAUCplot(:,i,:)),'all')
         annotation('textbox',[.71 .88 .3 .1],'String','\DeltaAUC','EdgeColor','none','FontSize',8);
     end
     % fig1.FontSize = 8;
     % fig1.ColorbarVisible = 'off';
-    filename_plot = strcat('heatmap_final_tension',replace(string(0.1+0.1*(i-1)),".",""));
+    filename_plot = strcat('heatmap_dAUC_tension',replace(string(0.1+0.1*(i-1)),".",""));
     % filename_plot = strcat('heatmap_fback075_input',inputs{i});
-    % saveas(fig1,strcat(filename_plot,'.fig'))
-    % saveas(fig1,strcat(filename_plot,'.svg'))
+    saveas(fig1,strcat(plotdir,filename_plot,'.fig'))
+    % saveas(fig1,strcat(plotdir,filename_plot,'.svg'))
 end
 
 % Distribution plots: between inputs
 % figure("Position",[80 80 350 700]);
-map2 = brewermap(9,'Spectral');
-for i = [2 5 9]
-    % subplot(5,2,i);
-    figure("Position",[100+20*i 300 400 300]);
-    inputlvls = 1:9;
-    for j = 1:length(inputlvls)
-        [kde,xi] = ksdensity(dAAplot(:,inputlvls(j),i),"Bandwidth",0.01);
-        % [counts,bins] = histcounts(dAAplot(:,j,i), ...
-        %     "Normalization","pdf", ...
-        %     "BinWidth",0.05, ...
-        %     "BinLimits",[-0.6 0.6]);
-        % plot(bins(2:end),counts);
-        plot(xi,kde,"Color",map2(j,:),"LineWidth",1.5);
-        % ylim([0 1]);
-        if j==1
-            hold on
-        end
-    end
-    xline(-0.05,'--'); xline(0.05,'--');
-    annotation('arrow',[0.4 0.2],[0.8 0.8],"Color",map(5,:), ...
-        "HeadLength",5,"HeadWidth",5,"HeadStyle","plain","LineWidth",1);
-    annotation('arrow',[0.63 0.83],[0.8 0.8],"Color",map(16,:), ...
-        "HeadLength",5,"HeadWidth",5,"HeadStyle","plain","LineWidth",1);
-    annotation('textbox',[0.2 0.76 0.15 0.13],'String','Dampening', ...
-        'EdgeColor','none','Color',map(5,:));
-    annotation('textbox',[0.62 0.76 0.15 0.13],'String','Amplification', ...
-        'EdgeColor','none','Color',map(16,:));
-    xlim([-0.6 0.6]); xticks(-0.6:0.2:0.6);
-    xlabel("\DeltaAUC"); ylabel("Probability Density");
-    title(strcat("Tension = ",string(0.1+0.1*(i-1))));
-    legend(inputNames,"Location","southoutside","NumColumns",3);
-    hold off
-end
+% map2 = brewermap(9,'Spectral');
+% for i = [2 5 9]
+%     % subplot(5,2,i);
+%     figure("Position",[100+20*i 300 400 300]);
+%     inputlvls = 1:9;
+%     for j = 1:length(inputlvls)
+%         [kde,xi] = ksdensity(dAUCplot(:,inputlvls(j),i),"Bandwidth",0.01);
+%         % [counts,bins] = histcounts(dAUCplot(:,j,i), ...
+%         %     "Normalization","pdf", ...
+%         %     "BinWidth",0.05, ...
+%         %     "BinLimits",[-0.6 0.6]);
+%         % plot(bins(2:end),counts);
+%         plot(xi,kde,"Color",map2(j,:),"LineWidth",1.5);
+%         % ylim([0 1]);
+%         if j==1
+%             hold on
+%         end
+%     end
+%     xline(-0.05,'--'); xline(0.05,'--');
+%     annotation('arrow',[0.4 0.2],[0.8 0.8],"Color",map(5,:), ...
+%         "HeadLength",5,"HeadWidth",5,"HeadStyle","plain","LineWidth",1);
+%     annotation('arrow',[0.63 0.83],[0.8 0.8],"Color",map(16,:), ...
+%         "HeadLength",5,"HeadWidth",5,"HeadStyle","plain","LineWidth",1);
+%     annotation('textbox',[0.2 0.76 0.15 0.13],'String','Dampening', ...
+%         'EdgeColor','none','Color',map(5,:));
+%     annotation('textbox',[0.62 0.76 0.15 0.13],'String','Amplification', ...
+%         'EdgeColor','none','Color',map(16,:));
+%     xlim([-0.6 0.6]); xticks(-0.6:0.2:0.6);
+%     xlabel("\DeltaAUC"); ylabel("Probability Density");
+%     title(strcat("Tension = ",string(0.1+0.1*(i-1))));
+%     legend(inputNames,"Location","southoutside","NumColumns",3);
+%     hold off
+% end
 
 % Distribution plots: between tension
-map2 = brewermap(size(dAAplot,3),'Blues');
+map2 = brewermap(size(dAUCplot,3),'Blues');
 % map2 = [0.07 0.62 1;1 0.41 0.16];
 tensionlvls = [2:9];
 % figure("Position",[160 80 350 700]);
-for i = 1:size(dAAplot,2)
+for i = 1:size(dAUCplot,2)
     figure("Position",[100+20*i 300 400 200]);
     for j = 1:length(tensionlvls)
         % [counts,bins] = histcounts(dAAplot(:,i,j), ...
@@ -131,7 +132,7 @@ for i = 1:size(dAAplot,2)
         %     "BinLimits",[-0.6 0.6]);
         % plot(bins(2:end),counts,"Color",map2(j,:));
         % ylim([0 1]);
-        [kde,xi] = ksdensity(dAAplot(:,i,tensionlvls(j)),"Bandwidth",0.01);
+        [kde,xi] = ksdensity(dAUCplot(:,i,tensionlvls(j)),"Bandwidth",0.01);
         plot(xi,kde,"LineWidth",1.5,"Color",map2(j+1,:));
         if j==1
             hold on
@@ -155,6 +156,8 @@ for i = 1:size(dAAplot,2)
     %legend(["Tension = 0.3";"Tension = 0.5"], ...
     %    "Location","southoutside","NumColumns",2);
     hold off
+    filename_plot = strcat('dist_dAUC_',inputNames{i});
+    saveas(gca,strcat(plotdir,filename_plot,'.fig'))
 end
 
 % K-S tests + B-H correction: between tension
