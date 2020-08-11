@@ -4,6 +4,7 @@
 %% Import simulation predictions (pred)
 homedir = "data\";
 valdir = "1_ModelValidation\";
+plotdir = "plots\";
 addpath(homedir)
 addpath(strcat(homedir,valdir));
 fprintf("Loading Data...\n")
@@ -212,3 +213,6 @@ for input = 1:length(joined_inputs_med)
         set(gca,'YLabel',"Measured Intermediate");
     end
 end
+
+saveas(overall,strcat(plotdir,"ModelValidation_outputs.fig"));
+saveas(overall_med,strcat(plotdir,"ModelValidation_intermediates.fig"));
