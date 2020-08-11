@@ -3,6 +3,7 @@
 
 homedir = "data\";
 valdir = "1_ModelValidation\";
+plotdir = "plots\";
 addpath(homedir)
 addpath(strcat(homedir,valdir));
 % Import simulation data
@@ -129,6 +130,7 @@ title("Input-Output Accuracy");
 subplot(1,2,2);
 fig = heatmap(correct_sweep,"n","EC50","ColorVariable","in-med");
 title("Input-Intermediate Accuracy");
+saveas(fig_sweep,strcat(plotdir,"S2_ModelValidation_paramsweep.fig"));
 
 %%%%%%% Fig. 2A: Qualitative heatmap, in-out relationships %%%%%%%
 joined = sortrows(joined_keep,{'Input','Output'});   %arrange rows for uniformity
