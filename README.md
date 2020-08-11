@@ -27,7 +27,16 @@ Performs parameter sweep of EC50/n reaction parameters, predicting qualitative c
 
 ### 2. Mechano-Chemo Interaction Analysis
 
-Simulation and comparison of dose-response behavior for biochemical inputs under varying levels of tension using changes in area-under-the-curve (\DeltaAUC) compared to baseline tension
+Simulation and comparison of dose-response behavior for biochemical inputs under varying levels of tension using changes in area-under-the-curve ($\Delta$AUC) compared to baseline tension
 - *InteractionSimulations.m*: Simulates steady-state network activation in response to 1% increments of each biochemical input under static levels of tension
-- *InteractionAnalysis.m*: Calculates \DeltaAUC metrics from each dose-response curve following normalization step, and identifies reversal cases from AUC signs
-- *InteractionVisualization.m*: Visualizes network-wide heatmaps of \DeltaAUC metrics (Figure 3A-B) and estimated density distributions for each input (Figure S3A)
+- *InteractionAnalysis.m*: Calculates $\Delta$AUC metrics from each dose-response curve following normalization step, and identifies reversal cases from AUC signs
+- *InteractionVisualization.m*: Visualizes network-wide heatmaps of $\Delta$AUC metrics (Figure 3A-B) and estimated density distributions for each input (Figure S3A)
+
+### 3. Network Perturbation Analysis
+
+Simulation of individual node knockdowns under low, medium, and high levels of tension, and identification of node sensitivity towards knockdown ("knockdown sensitivity") and influence on network-wide activity with knockdown ("knockdown influence")
+- *PerturbationSimulations.m*: Simulates steady-state network activation in response to knockdown of individual nodes under a specified level of tension
+  - Requires tension input reaction weight as argument (floating-point number between 0 and 1); levels 0.25, 0.5, and 0.75 used for study
+- *PerturbationAnalysis.m*: Calculates knockdown sensitivity and influence from simulated activation levels, and identifies top 10 nodes for each metric
+  - Requires tension input reaction weight as above
+- *PerturbationVisualization.m*: Constructs heatmaps of top-ranking nodes in sensitivity and influence for each tension level (Figure 4A-C) and bar plots combining all tension levels (Figure 4D-E)
