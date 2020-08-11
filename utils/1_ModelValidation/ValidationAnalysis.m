@@ -40,21 +40,21 @@ pred_med = pred_full;
 pred_med(:,outputs_idx+1) = [];
 
 %% Import SNM 1.0 predictions (pred_1_0)
-filedir = "snm_1_0_validation_predictions.mat";
-load(filedir)
-filedir = "snm_1_0_validation_speciesnames.mat";
-load(filedir)
+% filedir = "snm_1_0_validation_predictions.mat";
+% load(filedir)
+% filedir = "snm_1_0_validation_speciesnames.mat";
+% load(filedir)
 
-% add 'input' variable
-pred_1_0_full = array2table(predictions_SNM_1_0,'VariableNames',speciesNames_1_0.');
-pred_1_0_full = [inputNames pred_1_0_full];
-% subset for outputs only
-outputs_1_0_idx = [91,92,70,8,40,80,79,81,82,78,76,77,74,87,25];
-outputs_1_0_pred = pred_1_0_full.Properties.VariableNames(outputs_1_0_idx);
-pred_1_0 = pred_1_0_full(:,outputs_1_0_idx);
-% subset for intermediates
-pred_1_0_med = pred_1_0_full;
-pred_1_0_med(:,outputs_1_0_idx) = [];
+% % add 'input' variable
+% pred_1_0_full = array2table(predictions_SNM_1_0,'VariableNames',speciesNames_1_0.');
+% pred_1_0_full = [inputNames pred_1_0_full];
+% % subset for outputs only
+% outputs_1_0_idx = [91,92,70,8,40,80,79,81,82,78,76,77,74,87,25];
+% outputs_1_0_pred = pred_1_0_full.Properties.VariableNames(outputs_1_0_idx);
+% pred_1_0 = pred_1_0_full(:,outputs_1_0_idx);
+% % subset for intermediates
+% pred_1_0_med = pred_1_0_full;
+% pred_1_0_med(:,outputs_1_0_idx) = [];
 
 %% Import experimental validation (expt)
 filedir = "snm_1_1_validation.xlsx";
@@ -88,15 +88,15 @@ pred_long.Output = cellstr(string(pred_long.Output));    % match class with expt
 % join pred with expt based on matching fields: Input, Output
 joined = innerjoin(expt,pred_long,'Keys',{'Input','Output'});
 
-% Repeat for pred_1_0
-pred_1_0.Input = pred_1_0_full.input;
-pred_1_0_long = stack(pred_1_0,1:width(pred_1_0)-1);    % stack all vars except input
-pred_1_0_long.Properties.VariableNames = {'Input','Output','SNM_1_0_5pct'};
-pred_1_0_long.ID_pred_1_0 = [1:height(pred_1_0_long)].';
-pred_1_0_long.Output = cellstr(string(pred_1_0_long.Output));    % match class with expt
-% Convert 'Output' strings to match expt table (CI, CIII)
-pred_1_0_long.Output(strcmp(pred_1_0_long.Output,'CI')) = {'proCI'};
-pred_1_0_long.Output(strcmp(pred_1_0_long.Output,'CIII')) = {'proCIII'};
+% % Repeat for pred_1_0
+% pred_1_0.Input = pred_1_0_full.input;
+% pred_1_0_long = stack(pred_1_0,1:width(pred_1_0)-1);    % stack all vars except input
+% pred_1_0_long.Properties.VariableNames = {'Input','Output','SNM_1_0_5pct'};
+% pred_1_0_long.ID_pred_1_0 = [1:height(pred_1_0_long)].';
+% pred_1_0_long.Output = cellstr(string(pred_1_0_long.Output));    % match class with expt
+% % Convert 'Output' strings to match expt table (CI, CIII)
+% pred_1_0_long.Output(strcmp(pred_1_0_long.Output,'CI')) = {'proCI'};
+% pred_1_0_long.Output(strcmp(pred_1_0_long.Output,'CIII')) = {'proCIII'};
 % join pred with expt based on matching fields: Input, Output
 % joined = innerjoin(joined,pred_1_0_long,'Keys',{'Input','Output'});
 
@@ -110,9 +110,9 @@ s = summary(joined);
 % pct_1_0_1pct = s.Correct_1_0_1pct.True / s.Correct_1_0_1pct.Size(1);
 % pct_1_0_5pct = s.Correct_1_0_5pct.True / s.Correct_1_0_5pct.Size(1);
 pct_1_1 = s.Correct_1_1.True / s.Correct_1_1.Size(1);
-fmt = 'SNM 1.0 Output Accuracy (0.01 Threshold): %2.3f \n';
+% fmt = 'SNM 1.0 Output Accuracy (0.01 Threshold): %2.3f \n';
 % fprintf(fmt,pct_1_0_1pct)
-fmt = 'SNM 1.0 Output Accuracy (0.05 Threshold): %2.3f \n';
+% fmt = 'SNM 1.0 Output Accuracy (0.05 Threshold): %2.3f \n';
 % fprintf(fmt,pct_1_0_5pct)
 fmt = 'SNM 1.1 Output Accuracy: %2.3f \n';
 fprintf(fmt,pct_1_1)
@@ -126,27 +126,27 @@ pred_med_long.Output = cellstr(string(pred_med_long.Output));    % match class w
 % join pred with expt based on matching fields: Input, Output
 joined_med = innerjoin(expt_med,pred_med_long,'Keys',{'Input','Output'});
 
-% Repeat for pred_1_0
-pred_1_0_med_long = stack(pred_1_0_med,2:width(pred_1_0_med));    % stack all vars except input
-pred_1_0_med_long.Properties.VariableNames = {'Input','Output','SNM_1_0_5pct'};
-pred_1_0_med_long.ID_pred_1_0 = [1:height(pred_1_0_med_long)].';
-pred_1_0_med_long.Output = cellstr(string(pred_1_0_med_long.Output));    % match class with expt
-% Convert 'Output' strings to match expt table (CI, CIII)
-pred_1_0_med_long.Output(strcmp(pred_1_0_med_long.Output,'CI')) = {'proCI'};
-pred_1_0_med_long.Output(strcmp(pred_1_0_med_long.Output,'CIII')) = {'proCIII'};
-% join pred with expt based on matching fields: Input, Output
-joined_med = innerjoin(joined_med,pred_1_0_med_long,'Keys',{'Input','Output'});
-
-% Test for equivalence between measurements/predictions
-joined_med.Correct_1_0_5pct = (joined_med.Measurement == joined_med.SNM_1_0_5pct);
+% % Repeat for pred_1_0
+% pred_1_0_med_long = stack(pred_1_0_med,2:width(pred_1_0_med));    % stack all vars except input
+% pred_1_0_med_long.Properties.VariableNames = {'Input','Output','SNM_1_0_5pct'};
+% pred_1_0_med_long.ID_pred_1_0 = [1:height(pred_1_0_med_long)].';
+% pred_1_0_med_long.Output = cellstr(string(pred_1_0_med_long.Output));    % match class with expt
+% % Convert 'Output' strings to match expt table (CI, CIII)
+% pred_1_0_med_long.Output(strcmp(pred_1_0_med_long.Output,'CI')) = {'proCI'};
+% pred_1_0_med_long.Output(strcmp(pred_1_0_med_long.Output,'CIII')) = {'proCIII'};
+% % join pred with expt based on matching fields: Input, Output
+% joined_med = innerjoin(joined_med,pred_1_0_med_long,'Keys',{'Input','Output'});
+% 
+% % Test for equivalence between measurements/predictions
+% joined_med.Correct_1_0_5pct = (joined_med.Measurement == joined_med.SNM_1_0_5pct);
 joined_med.Correct_1_1 = (joined_med.Measurement == joined_med.SNM_1_1);
 
 % Get percentage of correct predictions
 s_med = summary(joined_med);
-pct_1_0_5pct = s_med.Correct_1_0_5pct.True / s_med.Correct_1_0_5pct.Size(1);
+% pct_1_0_5pct = s_med.Correct_1_0_5pct.True / s_med.Correct_1_0_5pct.Size(1);
 pct_1_1 = s_med.Correct_1_1.True / s_med.Correct_1_1.Size(1);
-fmt = 'SNM 1.0 Intermediate Accuracy (0.05 Threshold): %2.3f \n';
-fprintf(fmt,pct_1_0_5pct)
+% fmt = 'SNM 1.0 Intermediate Accuracy (0.05 Threshold): %2.3f \n';
+% fprintf(fmt,pct_1_0_5pct)
 fmt = 'SNM 1.1 Intermediate Accuracy: %2.3f \n';
 fprintf(fmt,pct_1_1)
 
