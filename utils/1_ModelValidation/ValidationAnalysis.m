@@ -214,5 +214,5 @@ for input = 1:length(joined_inputs_med)
     end
 end
 
-saveas(overall,strcat(plotdir,"ModelValidation_outputs.fig"));
-saveas(overall_med,strcat(plotdir,"ModelValidation_intermediates.fig"));
+saveas(overall,strcat(plotdir,"2A_ModelValidation_outputs.fig"));
+saveas(overall_med,strcat(plotdir,"2B_ModelValidation_intermediates.fig"));
