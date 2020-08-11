@@ -2,10 +2,10 @@
 %Written by Jesse Rogers - 29 June 2017
 %Edited by Jesse Rogers - 16 Oct 2019: tailored for SNM 1.1rev3
 
-%% dAA matrix loading
+%% dAUC matrix loading
 %Matrix filename should be formatted with input name:
-%'dSens_(input).mat'
-%Line 7: Select number of input data sets to be used
+%'dAUC_(input).mat'
+%Line 9: Select number of input data sets to be used
 imax = 9;
 inputs = cell(1,imax);      %labels for x-axis (1 x 10 cell) (input nodes changed)
 inputNames = {'AngII','TGFB','IL6','IL1','TNFa','NE','PDGF','ET1','NP'};
@@ -40,9 +40,9 @@ for k = 1:imax
     inputs(1,k) = cellstr(choice);
 end
 
-%% Heatmap Generation;
+%% Data Visualization
 
-%setting colorbar limits (based on max/min values of each dataset)
+%set colorbar limits (based on max/min values of each dataset)
 % lolimit = max(dAAplot,[],'all');
 limit = min(dAUCplot,[],'all');
 reverselabel = "Reverse";
