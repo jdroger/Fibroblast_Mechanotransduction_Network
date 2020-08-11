@@ -31,7 +31,7 @@ y0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 % storage arrays for basal, KO activity levels
 act_b = zeros(length(speciesNames), length(speciesNames));
 act_ko = zeros(length(speciesNames), length(speciesNames));
-tic
+
 parfor node = 1:length(speciesNames)
     fprintf("Node: %s\n",speciesNames{node})
     % run baseline simulation, store levels in t1, y1
@@ -59,12 +59,10 @@ act_delta = (act_ko - act_b);
 delete(gcp)
 
 % save results
-filedir = "D:\Research\Aim2\ModelExpansion\1_1\rev4\SensitivityAnalysis_Zeigler\sensitivity_data\";
-filename = 'snm_1_1_rev4_sensitivity_';
+filedir = "data\3_PerturbationAnalysis\";
 tensionname = replace(string(tension),".","");
-save(strcat(filedir,filename,'act_delta_tension',tensionname,'_final.mat'),'act_delta');
-save(strcat(filedir,filename,'speciesNames','_final.mat'),'speciesNames');
- toc
+save(strcat(filedir,'act_tension',tensionname,'.mat'),'act_delta');
+save(strcat(filedir,'speciesNames.mat'),'speciesNames');
  
 function dydt=ODEfun(t,y,params) 
 % Assign names for parameters 
