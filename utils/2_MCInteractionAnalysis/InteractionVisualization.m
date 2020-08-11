@@ -76,7 +76,7 @@ for i = [5 9]
     end
     % fig1.FontSize = 8;
     % fig1.ColorbarVisible = 'off';
-    filename_plot = strcat('heatmap_dAUC_tension',replace(string(0.1+0.1*(i-1)),".",""));
+    filename_plot = strcat('MCInteraction_tension',replace(string(0.1+0.1*(i-1)),".",""));
     % filename_plot = strcat('heatmap_fback075_input',inputs{i});
     saveas(fig1,strcat(plotdir,filename_plot,'.fig'))
     % saveas(fig1,strcat(plotdir,filename_plot,'.svg'))
@@ -118,7 +118,7 @@ end
 %     hold off
 % end
 
-% Distribution plots: between tension
+%%%%%% Figure S3A: dAUC Distribution Plots %%%%%%
 map2 = brewermap(size(dAUCplot,3),'Blues');
 % map2 = [0.07 0.62 1;1 0.41 0.16];
 tensionlvls = [2:9];
@@ -156,18 +156,18 @@ for i = 1:size(dAUCplot,2)
     %legend(["Tension = 0.3";"Tension = 0.5"], ...
     %    "Location","southoutside","NumColumns",2);
     hold off
-    filename_plot = strcat('dist_dAUC_',inputNames{i});
+    filename_plot = strcat('S3A_',inputNames{i});
     saveas(gca,strcat(plotdir,filename_plot,'.fig'))
 end
 
-% K-S tests + B-H correction: between tension
+%%%%%% Table S1: K-S tests + B-H correction: between tension %%%%%%
 p_inputs_25 = [];
 p_inputs_29 = [];
 p_inputs_59 = [];
-for row = 1:size(dAAplot,2)
-    [~,p25] = kstest2(dAAplot(:,row,2),dAAplot(:,row,5));   % compare tension 0.2/0.5
-    [~,p29] = kstest2(dAAplot(:,row,2),dAAplot(:,row,9));   % compare tension 0.2/0.9
-    [~,p59] = kstest2(dAAplot(:,row,5),dAAplot(:,row,9));   % compare tension 0.2/0.9
+for row = 1:size(dAUCplot,2)
+    [~,p25] = kstest2(dAUCplot(:,row,2),dAUCplot(:,row,5));   % compare tension 0.2/0.5
+    [~,p29] = kstest2(dAUCplot(:,row,2),dAUCplot(:,row,9));   % compare tension 0.2/0.9
+    [~,p59] = kstest2(dAUCplot(:,row,5),dAUCplot(:,row,9));   % compare tension 0.2/0.9
     p_inputs_25 = [p_inputs_25;p25];
     p_inputs_29 = [p_inputs_29;p29];
     p_inputs_59 = [p_inputs_59;p59];
