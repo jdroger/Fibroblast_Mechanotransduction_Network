@@ -8,7 +8,7 @@
 %% define drugscreen arguments:
 datadir = "data\5_DrugScreen\";
 screentype = "combinations";    % screen type: combinations (string)
-tension_all = [0.6];            % tension level (doubles)
+tension_all = [0.1 0.6];            % tension level (doubles)
 choice_all = ["KO"];            % knock-out or over-expression (strings)
 peak = 0.6;                     % peak input level for model (for Input_12_19)
 [InputCurves,~,inputNode,~,~] = InputCurve_12_19(peak,peak);

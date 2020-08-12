@@ -7,7 +7,7 @@
 
 %% define drugscreen arguments:
 screentype = "combinations";        % screen type: combinations (string)
-tension_all = [0.6];                % tension level (doubles)
+tension_all = [0.1 0.6];                % tension level (doubles)
 choice_all = ["OE-KO"];             % knock-out or over-expression (strings)
 combinations = nchoosek(1:109,2);   % to break down into smaller simulations
 c_error = [78 99];                  % points at which simulation crashes

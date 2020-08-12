@@ -8,7 +8,7 @@
 %% define drugscreen arguments:
 datadir = "data\5_DrugScreen\";
 screentype = "combinations";        % screen type: combinations (string)
-tension_all = [0.6];                % tension level (doubles)
+tension_all = [0.1 0.6];                % tension level (doubles)
 choice_all = ["KO-OE"];             % knock-out or over-expression (strings)
 combinations = nchoosek(1:109,2);   % to break down into smaller simulations
 c_len = round(length(combinations)/4);
