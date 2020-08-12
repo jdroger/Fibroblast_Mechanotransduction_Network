@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+#PBS -N SNM_DrugScreen_05272020_ko
+#PBS -l select=1:ncpus=8:mem=32gb
+#PBS -l walltime=48:00:00
+#PBS -m abe
+#PBS -j oe
+
+# ensure that /local_scratch is created on all nodes:
+module load gcc/4.8.1  openmpi/1.10.3
+mpirun sleep 20
+module purge
+module add matlab/2018b
+
+
+# copy data from /home to /local_scratch
+for node in `uniq $PBS_NODEFILE`
+do
+    ssh $node cp /home/jdroger/SNM_DrugScreen/*.m $TMPDIR
+done
+
+
+# start job
+cd $TMPDIR/
+taskset -c 0-$(($OMP_NUM_THREADS-1)) matlab -nodisplay -nosplash < snm_1_1_rev4_drugscreen_combinations_ko.m > DrugScreen_readout_06052020_ko.txt
+
+
+# copy data from /local_scratch to /home
+mkdir /home/jdroger/SNM_DrugScreen/results_06052020_ko/
+for node in `uniq $PBS_NODEFILE`
+do
+    ssh $node cp -r $TMPDIR/ /home/jdroger/SNM_DrugScreen/results_06052020_ko/
+done

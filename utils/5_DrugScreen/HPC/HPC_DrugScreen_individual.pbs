@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+#PBS -N HPC_DrugScreen_individual
+#PBS -l select=1:ncpus=8:mem=128gb
+#PBS -l walltime=48:00:00
+#PBS -m abe
+#PBS -j oe
+
+# ensure that /local_scratch is created on all nodes:
+module load gcc/4.8.1  openmpi/1.10.3
+mpirun sleep 20
+module purge
+module add matlab/2018b
+
+
+# copy data from /home to /local_scratch
+for node in `uniq $PBS_NODEFILE`
+do
+    ssh $node cp /home/jdroger/SNM_DrugScreen/*.m $TMPDIR
+done
+
+
+# start job
+cd $TMPDIR/
+taskset -c 0-$(($OMP_NUM_THREADS-1)) matlab -nodisplay -nosplash < DrugScreen_individual.m > DrugScreen_readout_individual.txt
+
+
+# copy data from /local_scratch to /home
+mkdir /home/jdroger/DrugScreen/results_individual/
+for node in `uniq $PBS_NODEFILE`
+do
+    ssh $node cp -r $TMPDIR/ /home/jdroger/DrugScreen/results_individual/
+done
