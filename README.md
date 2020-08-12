@@ -51,5 +51,8 @@ Simulation of output/intermediate responses towards angiotensin receptor blocker
 Comprehensive screening of all individual/combination drug targets for adaptive changes to matrix-related output expression
 - *DrugScreen_individual.m*: Runs individual drug screen for both knockdowns (ko) and overexpression (oe)
 - *DrugScreen_combinations_[type].m*: Runs combination drug screens for types dual ko [ko], dual overexpression [oe], node 1 ko + node 2 oe [ko-oe], and node 1 oe + node 2 ko [oe-ko]
-- *DrugScreenAnalysis_individual.m*: Identifies mechano-adaptive perturbations from individual drug screen
-- *DrugScreenAnalysis_combinations.m*: Identifies mechano-adaptive perturbations from combinations drug screens
+- *DrugScreenAnalysis_individual.m*: Identifies mechano-adaptive perturbations from individual drug screen (Figure S6)
+- *DrugScreenAnalysis_combinations.m*: Identifies mechano-adaptive perturbations from combinations drug screens (Figure 6)
+
+#### 5A. HPC Batch Scripts
+Includes bash shell scripts for submitting *DrugScreen* scripts to PBS scheduler. Recommended resources per script: 8 CPUs, 64GB memory, 48:00 runtime
