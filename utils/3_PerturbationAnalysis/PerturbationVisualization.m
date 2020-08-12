@@ -4,7 +4,7 @@ function PerturbationVisualization
 
 % load/compile data
 cmapdir = "utils\BrewerMap-master\";
-filedir = "data\3_PerturbationAnalysis";
+filedir = "data\3_PerturbationAnalysis\";
 % load(strcat(filedir,filename,'speciesNames.mat'),'speciesNames');
 addpath(cmapdir);
 
@@ -132,7 +132,7 @@ idx_tension = 31;
 act_allcases = zeros(10,10,length(tensioncases));
 for tension = 1:length(tensioncases)
     tensionname = replace(string(tensioncases(tension)),".","");
-    load(strcat(filedir,filename,'act_delta','_tension',tensionname,'_final.mat'), ...
+    load(strcat(filedir,'act_tension',tensionname,'.mat'), ...
         'act_delta');
     % remove tension node (07.29.2020 JR)
     act_delta(idx_tension,:) = [];
