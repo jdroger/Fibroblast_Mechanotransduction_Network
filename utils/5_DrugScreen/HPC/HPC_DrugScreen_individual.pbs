@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #PBS -N HPC_DrugScreen_individual
-#PBS -l select=1:ncpus=8:mem=128gb
+#PBS -l select=1:ncpus=8:mem=64gb
 #PBS -l walltime=48:00:00
 #PBS -m abe
 #PBS -j oe
@@ -16,7 +16,7 @@ module add matlab/2018b
 # copy data from /home to /local_scratch
 for node in `uniq $PBS_NODEFILE`
 do
-    ssh $node cp /home/jdroger/SNM_DrugScreen/*.m $TMPDIR
+    ssh $node cp /home/jdroger/DrugScreen/*.m $TMPDIR
 done
 
 

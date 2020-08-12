@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-#PBS -N SNM_DrugScreen_05272020_ko
-#PBS -l select=1:ncpus=8:mem=32gb
+#PBS -N HPC_DrugScreen_ko
+#PBS -l select=1:ncpus=8:mem=64gb
 #PBS -l walltime=48:00:00
 #PBS -m abe
 #PBS -j oe
@@ -16,18 +16,18 @@ module add matlab/2018b
 # copy data from /home to /local_scratch
 for node in `uniq $PBS_NODEFILE`
 do
-    ssh $node cp /home/jdroger/SNM_DrugScreen/*.m $TMPDIR
+    ssh $node cp /home/jdroger/DrugScreen/*.m $TMPDIR
 done
 
 
 # start job
 cd $TMPDIR/
-taskset -c 0-$(($OMP_NUM_THREADS-1)) matlab -nodisplay -nosplash < snm_1_1_rev4_drugscreen_combinations_ko.m > DrugScreen_readout_06052020_ko.txt
+taskset -c 0-$(($OMP_NUM_THREADS-1)) matlab -nodisplay -nosplash < DrugScreen_combinations_ko.m > DrugScreen_readout_ko.txt
 
 
 # copy data from /local_scratch to /home
-mkdir /home/jdroger/SNM_DrugScreen/results_06052020_ko/
+mkdir /home/jdroger/DrugScreen/results_ko/
 for node in `uniq $PBS_NODEFILE`
 do
-    ssh $node cp -r $TMPDIR/ /home/jdroger/SNM_DrugScreen/results_06052020_ko/
+    ssh $node cp -r $TMPDIR/ /home/jdroger/DrugScreen/results_ko/
 done
