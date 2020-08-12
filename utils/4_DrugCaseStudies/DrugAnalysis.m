@@ -9,6 +9,7 @@
 homedir = "data\";
 valdir = "4_DrugCaseStudies\";
 cmapdir = "utils\BrewerMap-master\";
+plotdir = "plots\";
 addpath(strcat(homedir,valdir));
 addpath(cmapdir);
 
@@ -213,9 +214,11 @@ for i = 1:length(expt_ramirez_plot)
     end
     hold off
 end
+saveas(gcf,strcat(plotdir,"5C_Ramirez_outputs.fig"));
+
 
 %% Visualize experimental vs. simulation data: Von Leuder
-% 1. Neprilysin inhibitor only (Fig. 2A)
+%%%%%% Figure S5A: NEPi dose-responses comparison %%%%%%
 expt_vonleuder_npi = expt_vonleuder{1}{:,2};
 expt_vonleuder_npisem = expt_vonleuder{2}{:,2};
 expt_vonleuder_npisem = expt_vonleuder_npisem ./ expt_vonleuder_npi(1,:);
@@ -231,15 +234,16 @@ subplot(1,2,1);
 bar(sim_vonleuder_npi);
 ylabel('proCI Activation'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_sim); xtickangle(45); ylim([0 ymax]);
-title("Simulation Data");
+title("Model Prediction");
 subplot(1,2,2);
 bar(expt_vonleuder_npi,'FaceColor',[.3 .3 .3]); hold on
 errorbar(expt_vonleuder_npi,expt_vonleuder_npisem,"LineStyle","none","Color","k");
 ylabel('H^{3}-Proline Incorporation'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_expt); xtickangle(45); ylim([0 ymax]);
 title("von Leuder 2015"); hold off
+saveas(gcf,strcat(plotdir,"S5A_vonLeuder_NEPi.fig"));
 
-% 2. Valsartan only (Fig. 3A)
+%%%%%% Figure S5B: ARB dose-response comparison %%%%%%
 expt_vonleuder_val = expt_vonleuder{3}{:,2};
 expt_vonleuder_valsem = expt_vonleuder{4}{:,2};
 expt_vonleuder_valsem = expt_vonleuder_valsem ./ expt_vonleuder_val(1,:);
@@ -253,18 +257,18 @@ ymax = max([sim_vonleuder_val;expt_vonleuder_val])*1.1;
 figure("Position",[100 100 500 250]);
 subplot(1,2,1);
 bar(sim_vonleuder_val);
-ylabel('proCI Activation'); set(gca,"YGrid",'on',"FontSize",10);
+ylabel('proCI Activity'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_sim); xtickangle(45); ylim([0 ymax]);
-title("Simulation Data");
+title("Model Prediction");
 subplot(1,2,2);
 bar(expt_vonleuder_val,'FaceColor',[.3 .3 .3]); hold on
 errorbar(expt_vonleuder_val,expt_vonleuder_valsem,"LineStyle","none","Color","k");
 ylabel('H^{3}-Proline Incorporation'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_expt); xtickangle(45); ylim([0 ymax]);
 title("von Leuder 2015"); hold off
+saveas(gcf,strcat(plotdir,"S5B_vonLeuder_ARB.fig"));
 
-% 3. Valsartan + Neprilysin inhibitor (Fig. 4A)
-% xlabs_sim = ["Control";"AngII";strcat("AngII+",string(perturblvls_vonleuder_val(:,1)),"AT1Ri")];
+%%%%%% Figure 5A: ARB-NEPi combination comparison %%%%%%
 expt_vonleuder_both_error = expt_vonleuder_both_error ./ expt_vonleuder_both_reordered(1);
 expt_vonleuder_both_reordered = expt_vonleuder_both_reordered ./ expt_vonleuder_both_reordered(1);
 xlabs_expt = ["Control","0 AT1Ri","0.01 AT1Ri","0.05 AT1Ri","0.15 AT1Ri","0.5 AT1Ri"];
@@ -275,10 +279,10 @@ colors = flipud(brewermap(2,'Paired'));
 figure("Position",[100 100 700 330]);
 subplot(3,2,[1 3]);
 bar(sim_vonleuder_both_reordered);
-ylabel('proCI Activation'); 
+ylabel('proCI Activity'); 
 set(gca,"YGrid",'on',"FontSize",10,"ColorOrder",colors);
 xticklabels(xlabs_expt); xtickangle(45); ylim([0 ymax]);
-title("Simulation Data");
+title("Model Prediction");
 subplot(3,2,5);
 bar(sim_vonleuder_both_reordered,"Visible",false);
 set(gca,"ColorOrder",colors,"FontSize",10);
@@ -304,9 +308,11 @@ bar(expt_vonleuder_both_reordered,"Visible",false);
 set(gca,"ColorOrder",colors,"FontSize",10);
 legend(legend_expt,"Location","southoutside","NumColumns",2);
 axis off
+saveas(gcf,strcat(plotdir,"5A_vonLeuder_ARB-NEPi.fig"));
+
 
 %% Visualize experimental vs. simulation data: Burke
-% 1. Output measurements (Fig. 5B)
+%%%%%% Figure 5B: output comparison %%%%%%
 expt_burke_plot = expt_burke{1}{:,2:end}.';
 expt_burke_sem = expt_burke{2}{:,2:end}.';
 legend_sim = ["T/A/A";strcat("T/A/A + ", ...
@@ -320,11 +326,11 @@ colors = redbluecmap(7);
 figure("Position",[100 100 700 300]);
 subplot(3,2,[1 3]);
 bar(sim_burke_outputs.');
-ylabel('Node Activation'); 
+ylabel('Node Activity'); 
 set(gca,"YGrid",'on',"FontSize",10,"ColorOrder",colors(1:3,:));
 % legend(legend_sim,"Location","southoutside","NumColumns",1);
 xticklabels(xlabs_sim); xtickangle(45); ylim([0 ymax]);
-title("Simulation Data");
+title("Model Prediction");
 
 subplot(3,2,[2 4]);
 bar(expt_burke_plot); hold on
@@ -352,8 +358,10 @@ bar(sim_burke_outputs.',"Visible",false);
 set(gca,"ColorOrder",[.2 .2 .2; .5 .5 .5; .8 .8 .8],"FontSize",10);
 legend(legend_expt,"Location","southoutside","NumColumns",1);
 axis off
+saveas(gcf,strcat(plotdir,"5B_Burke_outputs.fig"));
 
-% 2. PKG measurements (Fig. 6B)
+
+%%%%%% Figure S5C: PKG activation comparison %%%%%%
 expt_burke_plot = expt_burke{3}{:,2};
 expt_burke_sem = expt_burke{4}{:,2};
 xlabs_sim = ["T/A/A";strcat("T/A/A+", ...
@@ -365,9 +373,9 @@ figure("Position",[100 100 500 250]);
 subplot(1,2,1);
 bar(sim_burke_pkg);
 ymax = max(sim_burke_pkg)*1.1;
-ylabel('PKG Activation'); set(gca,"YGrid",'on',"FontSize",10);
+ylabel('PKG Activity'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_sim); xtickangle(45); ylim([0 ymax]);
-title("Simulation Data");
+title("Model Prediction");
 
 subplot(1,2,2);
 bar(expt_burke_plot,'FaceColor',[.3 .3 .3]); hold on
@@ -376,8 +384,9 @@ ymax = (max(expt_burke_plot)+max(expt_burke_sem))*1.1;
 ylabel('PKG Activity (FC)'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_expt); xtickangle(45); ylim([0 ymax]);
 title("Burke 2019"); hold off
+saveas(gcf,strcat(plotdir,"S5C_Burke_PKG.fig"));
 
-% 2. Rho measurements (Fig. 7)
+%%%%%% Figure S5D: Rho activity comparison %%%%%%
 expt_burke_plot = expt_burke{5}{:,2};
 expt_burke_sem = expt_burke{6}{:,2};
 xlabs_sim = ["T/A/A";strcat("T/A/A+", ...
@@ -391,9 +400,9 @@ figure("Position",[100 100 500 250]);
 subplot(1,2,1);
 bar(sim_burke_rho);
 ymax = max(sim_burke_rho)*1.1;
-ylabel('Rho Activation'); set(gca,"YGrid",'on',"FontSize",10);
+ylabel('Rho Activity'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_sim); xtickangle(45); ylim([0 ymax]);
-title("Simulation Data");
+title("Model Prediction");
 
 subplot(1,2,2);
 bar(expt_burke_plot,'FaceColor',[.3 .3 .3]); hold on
@@ -402,4 +411,5 @@ ymax = (max(expt_burke_plot)+max(expt_burke_sem))*1.1;
 ylabel('Rho (active)/Rho (total)'); set(gca,"YGrid",'on',"FontSize",10);
 xticklabels(xlabs_expt); xtickangle(45); ylim([0 ymax]);
 title("Burke 2019"); hold off
+saveas(gcf,strcat(plotdir,"S5D_Burke_Rho.fig"));
 
