@@ -1,4 +1,4 @@
-function [outputs,sheets] = ImportSupplementalData_All(dbdir,snmdir)
+function [outputs,sheets] = ImportSupplementalData(dbdir,snmdir)
 
 % load full sheets: LV control ECM array, LV infarct ECM array, SEM for
 % both

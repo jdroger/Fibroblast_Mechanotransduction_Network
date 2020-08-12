@@ -6,9 +6,9 @@
 % Matrix Biology 2020), and tension levels are varied manually within same
 % range.
 
-homedir = "D:\Research\Aim2\ModelExpansion\";
-valdir = "1_1\rev4\DrugValidation\";
-cmapdir = "D:/Research/Aim2/BrewerMap-master/";
+homedir = "data\";
+valdir = "4_DrugCaseStudies\";
+cmapdir = "utils\BrewerMap-master\";
 addpath(strcat(homedir,valdir));
 addpath(cmapdir);
 
@@ -41,8 +41,8 @@ tension_remote = 0.1;
 tension_infarct = 0.6;
 perturblvls_ramirez = -0.5;
 perturbnodes_ramirez = 2;
-[sim_ramirez_remote,~] = Simulation_All(inputs_ramirez_remote,inputNode_ramirez,perturblvls_ramirez,perturbnodes_ramirez,tension_remote);
-[sim_ramirez_infarct,~] = Simulation_All(inputs_ramirez_infarct,inputNode_ramirez,perturblvls_ramirez,perturbnodes_ramirez,tension_infarct);
+[sim_ramirez_remote,~] = DrugSimulation(inputs_ramirez_remote,inputNode_ramirez,perturblvls_ramirez,perturbnodes_ramirez,tension_remote);
+[sim_ramirez_infarct,~] = DrugSimulation(inputs_ramirez_infarct,inputNode_ramirez,perturblvls_ramirez,perturbnodes_ramirez,tension_infarct);
 
 % von Leuder study: perturbs estimated manually
 tension_cc = 0.3;
@@ -50,17 +50,17 @@ perturblvls_vonleuder_npi = [0 0.05; 0 0.5; 0 1.5; 0 4];
 perturblvls_vonleuder_val = [-0.01 0; -0.05 0; -0.15 0; -0.5 0];
 perturblvls_vonleuder_both = [0 4; -0.01 0; -0.01 4; -0.05 0; -0.05 4; -0.15 0; -0.15 4; -0.5 0; -0.5 4];
 perturbnodes_vonleuder = [2 27];
-[sim_vonleuder_npi,~] = Simulation_All(inputs_vonleuder,inputNode_vonleuder,perturblvls_vonleuder_npi,perturbnodes_vonleuder,tension_cc);
-[sim_vonleuder_val,~] = Simulation_All(inputs_vonleuder,inputNode_vonleuder,perturblvls_vonleuder_val,perturbnodes_vonleuder,tension_cc);
-[sim_vonleuder_both,~] = Simulation_All(inputs_vonleuder,inputNode_vonleuder,perturblvls_vonleuder_both,perturbnodes_vonleuder,tension_cc);
+[sim_vonleuder_npi,~] = DrugSimulation(inputs_vonleuder,inputNode_vonleuder,perturblvls_vonleuder_npi,perturbnodes_vonleuder,tension_cc);
+[sim_vonleuder_val,~] = DrugSimulation(inputs_vonleuder,inputNode_vonleuder,perturblvls_vonleuder_val,perturbnodes_vonleuder,tension_cc);
+[sim_vonleuder_both,~] = DrugSimulation(inputs_vonleuder,inputNode_vonleuder,perturblvls_vonleuder_both,perturbnodes_vonleuder,tension_cc);
 
 % Burke study: perturbs estimated manually
 perturblvls_burke = [-0.5 0; 0 4; -0.5 4];
 perturbnodes_burke = [2 27];
-[sim_burke,~] = Simulation_All(inputs_burke,inputNode_burke,perturblvls_burke,perturbnodes_burke,tension_cc);
+[sim_burke,~] = DrugSimulation(inputs_burke,inputNode_burke,perturblvls_burke,perturbnodes_burke,tension_cc);
 
 %% Plot top-ranking changes in activity
-load(strcat(homedir,valdir,"drugvalidation_speciesNames.mat"), "speciesNames");
+load(strcat(homedir,valdir,"speciesNames.mat"), "speciesNames");
 
 % top 10 downregulated nodes
 % top = 10;
@@ -91,12 +91,12 @@ load(strcat(homedir,valdir,"drugvalidation_speciesNames.mat"), "speciesNames");
 % close all
 
 %% Import experimental data: von Leuder, Burke, Ramirez studies
-filename = "1_1\rev4\snm_1_1_rev4.xlsx";
+filename = "snm_1_1_rev4.xlsx";
 snmdir = strcat(homedir,filename);
 
 filename = "experimentaldata_Ramirez_outputs.xlsx";
 dbdir = strcat(homedir,valdir,filename);
-[expt_ramirez,sheetnames_ramirez] = ImportSupplementalData_All(dbdir,snmdir);
+[expt_ramirez,sheetnames_ramirez] = ImportSupplementalData(dbdir,snmdir);
 expt_ramirez_all = [expt_ramirez{1};expt_ramirez{3}];
 expt_ramirez_all(4,:) = [];     % remove duplicate condition (day0)
 expt_ramirez_sem = [expt_ramirez{2};expt_ramirez{4}];
@@ -104,13 +104,13 @@ expt_ramirez_sem(4,:) = [];
 
 filename = "experimentaldata_vonLeuder_outputs.xlsx";
 dbdir = strcat(homedir,valdir,filename);
-[expt_vonleuder,sheetnames_vonleuder] = ImportSupplementalData_All(dbdir,snmdir);
+[expt_vonleuder,sheetnames_vonleuder] = ImportSupplementalData(dbdir,snmdir);
 % expt_vonleuder_all = [expt_vonleuder{1};expt_vonleuder{3}];
 % expt_vonleuder_sem = [expt_vonleuder{2};expt_vonleuder{4}];
 
 filename = "experimentaldata_Burke_outputs.xlsx";
 dbdir = strcat(homedir,valdir,filename);
-[expt_burke,sheetnames_burke] = ImportSupplementalData_All(dbdir,snmdir);
+[expt_burke,sheetnames_burke] = ImportSupplementalData(dbdir,snmdir);
 
 
 %% Process simulation + experimental data
