@@ -36,7 +36,7 @@ inputs_all = [inputs_remote inputs_infarct];
 
 %% perform drug screens
 fprintf("\n<<<<<< Starting Screen: t=%dwks | LVC=%.2f >>>>>>\n",t/7/24,inputs_fraction)
-% parpool()
+parpool()
 
 for choice = choice_all
     for sim = 1:length(tension_all)
@@ -57,4 +57,4 @@ for choice = choice_all
     end
 end
 
-% delete(gcp)
+delete(gcp)
