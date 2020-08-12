@@ -6,14 +6,11 @@
 % MB 2020) + Added multiple screens
 
 %% define drugscreen arguments:
-% screen type: combinations (string)
-screentype = "combinations";
-% tension level (doubles)
-tension_all = [0.6];
-% knock-out or over-expression (strings)
-choice_all = ["KO"];
-% input levels: from InputCurve_12_19.m script
-peak = 0.6;                     % peak input level for model
+datadir = "data\5_DrugScreen\";
+screentype = "combinations";    % screen type: combinations (string)
+tension_all = [0.6];            % tension level (doubles)
+choice_all = ["KO"];            % knock-out or over-expression (strings)
+peak = 0.6;                     % peak input level for model (for Input_12_19)
 [InputCurves,~,inputNode,~,~] = InputCurve_12_19(peak,peak);
 t = 2*7*24;                     % time in h
 t0_analysis = 168;              % 168 h added as baseline
@@ -33,11 +30,11 @@ for choice = choice_all
     for sim = 1:length(tension_all)
         inputs = inputs_all(:,sim);
         tension = tension_all(sim);
-        act_delta = drugscreen_mixedtypes(screentype,inputs,inputNode,tension,choice);
+        act_delta = DrugScreenSimulations(screentype,inputs,inputNode,tension,choice);
         % save results
         tensionname = replace(string(tension),".","");
-        filename = strcat(screentype,"_tension",tensionname,"_",choice,".mat");
-        save(filename, 'act_delta');
+        filename = strcat(datadir,screentype,"_tension",tensionname,"_",choice,".mat");
+        save(filename,'act_delta');
     end
 end
 
