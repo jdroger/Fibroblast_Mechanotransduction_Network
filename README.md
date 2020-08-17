@@ -1,7 +1,7 @@
 # Fibroblast Mechano-Chemo Signaling Network Model Analysis
 
 08.10.2020 Jesse Rogers
-bioRxiv DOI: 10.1101/2020.08.13.250001
+bioRxiv DOI: 10.1101/2020.08.13.250001  
 
 This repository provides analyses for a Netflux-generated ODE network of fibroblast signaling. Included here are scripts for performing model validation, mechano-chemo interaction, and network perturbation analyses, as well as current drug case studies and comprehensive drug screens.
 
